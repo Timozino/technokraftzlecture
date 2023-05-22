@@ -15,15 +15,25 @@ SECRET_KEY = 'django-insecure-t^11*)5w+c5zy34ms0@f&67lztf1x$aon(5yg52ss1t@(k%0j-
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-
-ALLOWED_HOSTS = []
+DEBUG = False
+ADMINS = [
+ ('Timson F', 'timson@technokraftz.com'),
+]
+ALLOWED_HOSTS = ['*']
+DATABASES = {
+ 'default': {
+ 'ENGINE': 'django.db.backends.sqlite3',
+ 'NAME': BASE_DIR / 'db.sqlite3',
+ }
+}
+#ALLOWED_HOSTS = []
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'channels',
-    #'daphne',
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -89,7 +99,12 @@ ASGI_APPLICATION = 'educa.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
+DATABASES = {
+ 'default': {
+ 'ENGINE': 'django.db.backends.sqlite3',
+ 'NAME': BASE_DIR / 'db.sqlite3',
+ }
+}
 
 
 # Password validation
