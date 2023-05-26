@@ -16,16 +16,18 @@ SECRET_KEY = 'django-insecure-t^11*)5w+c5zy34ms0@f&67lztf1x$aon(5yg52ss1t@(k%0j-
 # SECURITY WARNING: don't run with debug turned on in production!
 
 DEBUG = False
+
+ALLOWED_HOSTS = ['*']
 ADMINS = [
  ('Timson F', 'timson@technokraftz.com'),
 ]
-ALLOWED_HOSTS = ['*']
-DATABASES = {
- 'default': {
- 'ENGINE': 'django.db.backends.sqlite3',
- 'NAME': BASE_DIR / 'db.sqlite3',
- }
-}
+#ALLOWED_HOSTS = ['*']
+# DATABASES = {
+#  'default': {
+#  'ENGINE': 'django.db.backends.sqlite3',
+#  'NAME': BASE_DIR / 'db.sqlite3',
+#  }
+# }
 #ALLOWED_HOSTS = []
 
 
@@ -49,7 +51,8 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'redisboard',
     'rest_framework',
-    'crispy_forms',
+    
+    #"crispy_forms",
     #'channels',
     
     
@@ -98,13 +101,23 @@ ASGI_APPLICATION = 'educa.asgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 DATABASES = {
- 'default': {
- 'ENGINE': 'django.db.backends.sqlite3',
- 'NAME': BASE_DIR / 'db.sqlite3',
- }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': 'db',
+        'PORT': 5432,
+    }
 }
+# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+# DATABASES = {
+#  'default': {
+#  'ENGINE': 'django.db.backends.sqlite3',
+#  'NAME': BASE_DIR / 'db.sqlite3',
+#  }
+# }
 
 
 # Password validation
@@ -124,6 +137,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
 
 #caching
 # CACHES = {
@@ -161,6 +176,15 @@ REST_FRAMEWORK = {
  'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
  ]
 }
+
+
+# REDIS_URL = 'redis://cache:6379'
+# CACHES['default']['LOCATION'] = REDIS_URL
+# CHANNEL_LAYERS['default']['CONFIG']['hosts'] = [REDIS_URL]
+
+
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -176,6 +200,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+#STATIC_ROOT = '/static/'
 STATIC_URL = 'static/'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -186,7 +211,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 from django.urls import reverse_lazy
 LOGIN_REDIRECT_URL = reverse_lazy('student_course_list')
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+#DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 INTERNAL_IPS = [
@@ -195,4 +220,4 @@ INTERNAL_IPS = [
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'  # or 'bootstrap3', depending on your preferred Bootstrap version
 
-
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
