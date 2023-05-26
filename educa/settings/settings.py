@@ -1,6 +1,8 @@
 
 import os
 from pathlib import Path
+import dj_database_url
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -51,6 +53,8 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'redisboard',
     'rest_framework',
+    'whitenoise',
+    'dj-database-url',
     
     #"crispy_forms",
     #'channels',
@@ -64,6 +68,7 @@ MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     #'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     #'django.middleware.cache.FetchFromCacheMiddleware',
@@ -119,6 +124,8 @@ DATABASES = {
 #  }
 # }
 
+db_from_prod= dj_database_url.config(conn_max_age=600, ssl_require=True)
+DATABASES['default'].update(db_from_prod)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -178,9 +185,9 @@ REST_FRAMEWORK = {
 }
 
 
-# REDIS_URL = 'redis://cache:6379'
-# CACHES['default']['LOCATION'] = REDIS_URL
-# CHANNEL_LAYERS['default']['CONFIG']['hosts'] = [REDIS_URL]
+REDIS_URL = 'redis://cache:6379'
+CACHES['default']['LOCATION'] = REDIS_URL
+CHANNEL_LAYERS['default']['CONFIG']['hosts'] = [REDIS_URL]
 
 
 
