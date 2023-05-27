@@ -239,7 +239,12 @@ USE_TZ = True
 
 #STATIC_ROOT = '/static/'
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'static'
+# Tell WhiteNoise where your static files are located
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Add WhiteNoise to the static file finders
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
