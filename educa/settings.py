@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'whitenoise',
     #'dj-database-url',
     
-    #"crispy_forms",
+    "crispy_forms",
     #'channels',
     
     
@@ -126,8 +126,9 @@ DATABASES = {
 }
 
 
-db_from_prod= dj_database_url.config(conn_max_age=600, ssl_require=True)
-DATABASES['default'].update(db_from_prod)
+DATABASES = {
+    'default': dj_database_url.config(default='postgres://localhost/dbname')
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -159,24 +160,47 @@ REDIS_URL = 'redis://cache:6379'
 #  'LOCATION': '127.0.0.1:11211',
 #  }
 # }
+# CACHES = {
+#  'default': {
+#  'BACKEND':  'django.core.cache.backends.redis.RedisCache',
+#  'LOCATION': 'redis://127.0.0.1:6379',
+#  }
+# }
 CACHES = {
- 'default': {
- 'BACKEND':  'django.core.cache.backends.redis.RedisCache',
- 'LOCATION': 'redis://127.0.0.1:6379',
- }
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': os.environ.get('REDIS_URL', 'redis://localhost:6379'),
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
 }
 
-CACHES['default']['LOCATION'] = REDIS_URL
+#CACHES['default']['LOCATION'] = REDIS_URL
 
+# CHANNEL_LAYERS = {
+#  'default': {
+#  'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#  'CONFIG': {
+#  'hosts': [('127.0.0.1', 6379)],
+#  },
+#  },
+# }
+#CHANNEL_LAYERS['default']['CONFIG']['hosts'] = [REDIS_URL]
+
+
+# Configure Django Channels
 CHANNEL_LAYERS = {
- 'default': {
- 'BACKEND': 'channels_redis.core.RedisChannelLayer',
- 'CONFIG': {
- 'hosts': [('127.0.0.1', 6379)],
- },
- },
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+        },
+    },
 }
-CHANNEL_LAYERS['default']['CONFIG']['hosts'] = [REDIS_URL]
+
+
+
 
 CACHE_MIDDLEWARE_ALIAS = 'default'
 CACHE_MIDDLEWARE_SECONDS = 60 * 15 # 15 minutes
@@ -191,9 +215,9 @@ REST_FRAMEWORK = {
 }
 
 
-REDIS_URL = 'redis://cache:6379'
-CACHES['default']['LOCATION'] = REDIS_URL
-CHANNEL_LAYERS['default']['CONFIG']['hosts'] = [REDIS_URL]
+# REDIS_URL = 'redis://cache:6379'
+# CACHES['default']['LOCATION'] = REDIS_URL
+# CHANNEL_LAYERS['default']['CONFIG']['hosts'] = [REDIS_URL]
 
 
 
@@ -215,7 +239,8 @@ USE_TZ = True
 
 #STATIC_ROOT = '/static/'
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR / 'static'
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
