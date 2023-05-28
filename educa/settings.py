@@ -271,4 +271,4 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'  # or 'bootstrap3', depending on your prefer
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CSRF_TRUSTED_ORIGINS = ['https://technokraftz-class.herokuapp.com']
+CSRF_TRUSTED_ORIGINS = ['https://technokraftz.space']
