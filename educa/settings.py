@@ -151,7 +151,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # settings.py
 
-CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = True
 
 REDIS_URL = 'redis://cache:6379'
 
